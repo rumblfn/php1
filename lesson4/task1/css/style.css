@@ -1,0 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    transition: all 0.3s;
+}
+
+html {
+    background-color: wheat;
+}
+
+.container {
+    max-width: 1200px;
+    padding: 3%;
+    margin: 0 auto;
+}
+
+.title {
+    margin-bottom: 16px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+input[type="submit"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid rgb(32, 32, 32);
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.custom-file-upload:hover {
+    background-color: #ccc;
+}
+
+img {
+    border-radius: 15px;
+    width: 100%;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+img:hover {
+    filter: brightness(50%);
+}
+
+.gallery {
+    margin-top: 32px;
+    column-count: 3;
+    grid-column-gap: 16px;
+}
+
+.sub-title {
+    margin-bottom: 12px;
+}
