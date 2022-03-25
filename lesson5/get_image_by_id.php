@@ -6,8 +6,12 @@ include('db_connect.php');
 $id =  (int)$_GET['id'];
 $image_name = mysqli_fetch_row(mysqli_query($db, "SELECT name FROM `images` WHERE id = $id"))[0];
 $page_not_found = false;
+
 if ($image_name === null) {
     $page_not_found = true;
+} else {
+    mysqli_query($db, "UPDATE `images` SET views = views + 1 WHERE id = $id");
+    $image_views = mysqli_fetch_row(mysqli_query($db, "SELECT views FROM `images` WHERE id = $id"))[0];
 }
 
 ?>
@@ -48,6 +52,9 @@ if ($image_name === null) {
                 src=<?=$path_to_big_images . $image_name?> 
                 alt=<?=$image_name?>>
         </div>
+        <h4>
+            Количество просмотров: <?=$image_views?>
+        </h4>
     </div>
 </body>
 </html>

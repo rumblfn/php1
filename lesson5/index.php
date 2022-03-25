@@ -37,7 +37,7 @@ if (!empty($_FILES)) {
 
         if (move_uploaded_file($origin, $path)) {
             $size = $check_size['size'];
-            $query = mysqli_query($db, "INSERT INTO `images` (name, size) VALUES ('$basename', '$size')");
+            mysqli_query($db, "INSERT INTO `images` (name, size) VALUES ('$basename', '$size')");
 
             $message =  "ok";
         } else {
@@ -55,7 +55,7 @@ if (!empty($_FILES)) {
 
 $message = $messages[$_GET['status'] ?? "default"];
 
-$images = mysqli_query($db, "SELECT * FROM `images`");
+$images = mysqli_query($db, "SELECT * FROM `images` ORDER BY views DESC");
 
 ?>
 <!doctype html>
@@ -82,7 +82,7 @@ $images = mysqli_query($db, "SELECT * FROM `images`");
         <div class="gallery">
             <?php while ($row = mysqli_fetch_assoc($images)):?>
                 <a href="get_image_by_id.php?id=<?=$row['id']?>">
-                    <img class="img-gallery" src=<?=$path_to_small_images . $row['name']?> alt=<?=$row['name']?>/>
+                    <img class="img-gallery" src=<?=$path_to_small_images . $row['name']?> alt=<?=$row['name']?>>
                 </a>
             <?php endwhile?>
         </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 25, 2022 at 06:47 PM
+-- Generation Time: Mar 25, 2022 at 07:35 PM
 -- Server version: 5.7.34
 -- PHP Version: 7.4.21
 
@@ -30,15 +30,16 @@ SET time_zone = "+00:00";
 CREATE TABLE `images` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
-  `size` varchar(7) DEFAULT NULL
+  `size` varchar(7) DEFAULT NULL,
+  `views` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `images`
 --
 
-INSERT INTO `images` (`id`, `name`, `size`) VALUES
-(24, '9_moscow-4k-wallpaper-4-1870x1169.jpg', '360435');
+INSERT INTO `images` (`id`, `name`, `size`, `views`) VALUES
+(36, '4847463.jpg', '374376', 5);
 
 --
 -- Indexes for dumped tables
@@ -58,7 +59,7 @@ ALTER TABLE `images`
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
