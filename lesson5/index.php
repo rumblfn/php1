@@ -1,6 +1,9 @@
-<?php
+<?php 
+
 include('classSimpleImage.php');
 include('functions.php');
+include('config.php');
+include('db_connect.php');
 
 $messages = [
     'ok' => 'Файл загружен',
@@ -20,21 +23,22 @@ if (!empty($_FILES)) {
         $message =  'file_type_error';
     }
 
-    if (!$check_size) {
+    if (!$check_size['status']) {
         $message =  'size_error';
     }
 
     if ($check_type && $check_size) 
     {
-        $uploadBigDir = 'upload/big/';
-        $uploadSmallDir = 'upload/small/';
         $basename = basename($_FILES['myfile']['name']);
-        $path = $uploadBigDir . $basename;
+        $path = $path_to_big_images . $basename;
         $origin = $_FILES['myfile']["tmp_name"];
 
-        resizer($basename, $origin, $uploadSmallDir);
+        resizer($basename, $origin, $path_to_small_images);
 
         if (move_uploaded_file($origin, $path)) {
+            $size = $check_size['size'];
+            $query = mysqli_query($db, "INSERT INTO `images` (name, size) VALUES ('$basename', '$size')");
+
             $message =  "ok";
         } else {
             $message =  "error";
@@ -51,7 +55,7 @@ if (!empty($_FILES)) {
 
 $message = $messages[$_GET['status'] ?? "default"];
 
-$images = getImages();
+$images = mysqli_query($db, "SELECT * FROM `images`");
 
 ?>
 <!doctype html>
@@ -59,7 +63,7 @@ $images = getImages();
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <title>Gallery</title>
 </head>
 <body>
     <div class="container">
@@ -76,16 +80,11 @@ $images = getImages();
             </label>
         </form>
         <div class="gallery">
-            <?php foreach ($images as $image):?>
-                <?php if (mb_substr($image, 0, 1) !== '.'): 
-                    $path_to_image = "upload/small/" . $image;
-                    $path_to_big_image = "upload/big/" . $image;
-                ?>
-                    <a href=<?=$path_to_big_image?>>
-                        <img src=<?=$path_to_image?> alt=<?=$image?>/>
+            <?php while ($row = mysqli_fetch_assoc($images)):?>
+                <a href="get_image_by_id.php?id=<?=$row['id']?>">
+                    <img class="img-gallery" src=<?=$path_to_small_images . $row['name']?> alt=<?=$row['name']?>/>
                 </a>
-                <?php endif?>
-            <?php endforeach?>
+            <?php endwhile?>
         </div>
     </div>
     <script type="text/javascript" src="js/index.js"></script>
