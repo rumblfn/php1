@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 27, 2022 at 11:06 PM
+-- Generation Time: Apr 03, 2022 at 05:52 PM
 -- Server version: 5.7.34
 -- PHP Version: 7.4.21
 
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `clothes_shop`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `basket`
+--
+
+CREATE TABLE `basket` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `item_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `basket`
+--
+
+INSERT INTO `basket` (`id`, `user_id`, `item_id`) VALUES
+(1, 13, 2),
+(7, 14, 2),
+(8, 14, 5),
+(10, 13, 1),
+(12, 13, 3),
+(13, 13, 7),
+(14, 13, 8);
 
 -- --------------------------------------------------------
 
@@ -70,9 +95,9 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `title`, `description`, `price`, `collection`, `options`, `views`, `preview_photo_name`) VALUES
-(1, 'item1', 'simple description', '$97.53', 'women', NULL, 16, 'card2.png'),
-(2, 'item2', 'simple description2', '$52.87', 'man', NULL, 111, 'card3.png'),
-(3, 'item3', 'simple description3', '$12.00', 'women', NULL, 11, 'card6.png'),
+(1, 'item1', 'simple description', '$97.53', 'women', NULL, 17, 'card2.png'),
+(2, 'item2', 'simple description2', '$52.87', 'man', NULL, 114, 'card3.png'),
+(3, 'item3', 'simple description3', '$12.00', 'women', NULL, 14, 'card6.png'),
 (4, 'item4', 'simple description4', '$43.00', 'all', NULL, 2, 'card1.png'),
 (5, 'item5', 'simple description5', '$53.00', 'all', NULL, 31, 'card4.png'),
 (6, 'item6', 'simple description6', '$26.00', 'all', NULL, 9, 'card5.png'),
@@ -104,11 +129,43 @@ INSERT INTO `reviews` (`id`, `item_id`, `name`, `text`, `time`) VALUES
 (3, 2, 'toshamilval@yandex.ru', 'Third order', '2022-03-27 19:48:11'),
 (4, 5, 'toshamilgis@gmail.com', 'item5 первый отзыв', '2022-03-27 19:51:06'),
 (5, 2, 'toshamilgis@gmail.com', 'feedback', '2022-03-27 19:51:59'),
-(6, 3, 'almazShamilArtem@gmail.com', 'Отлично', '2022-03-27 20:05:03');
+(6, 3, 'almazShamilArtem@gmail.com', 'Отлично', '2022-03-27 20:05:03'),
+(7, 2, 'toshamilgis@gmail.com', 'jjjj', '2022-04-01 19:43:41');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `name` text NOT NULL,
+  `surname` text NOT NULL,
+  `gender` varchar(6) NOT NULL,
+  `email` text NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `surname`, `gender`, `email`, `password`) VALUES
+(13, 'Шамиль', 'Валиахметов', 'male', 'toshamilgis@gmail.com', '$2y$10$O1xPtFH1TpHgwA5Z/y7tSe222mcMsLQs4L30KZRvgaM5AJsSicmB6'),
+(14, 'Шамиль', 'Валиахметов', '', 'toshamilval@yandex.ru', '$2y$10$Np9mFRGWHZ6sB7ctK2JhIe4LBJRGZJt84Bwr4DvFoxoHtvq/k99X.');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `basket`
+--
+ALTER TABLE `basket`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_item_id_basket` (`item_id`),
+  ADD KEY `fk_user_id_basket` (`user_id`);
 
 --
 -- Indexes for table `images`
@@ -131,8 +188,20 @@ ALTER TABLE `reviews`
   ADD KEY `fk_item_id_from_reviews` (`item_id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `basket`
+--
+ALTER TABLE `basket`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `images`
@@ -150,11 +219,24 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `basket`
+--
+ALTER TABLE `basket`
+  ADD CONSTRAINT `fk_item_id_basket` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`),
+  ADD CONSTRAINT `fk_user_id_basket` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `images`

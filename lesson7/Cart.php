@@ -1,3 +1,23 @@
+<?php
+
+include('db_connect.php');
+include('auth.php');
+
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
+    $result = mysqli_query($db, "DELETE FROM `basket` WHERE id = $id");
+    header("Location: Cart.php");
+    die();
+}
+
+$items = [];
+$items_id = mysqli_query($db, "SELECT id, item_id FROM `basket` WHERE user_id = $user_id");
+while($row = mysqli_fetch_assoc($items_id)){
+    $item_id = $row['item_id'];
+    $items[$row['id']] = mysqli_fetch_row(mysqli_query($db, "SELECT * FROM `items` WHERE id = $item_id"));
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +38,7 @@
 <body>
     <div class="wrapper">
         <div class="top">
-            <?php include('components/header.html') ?>
+            <?php include('header.php'); ?>
         </div>
         <div class="content">
             <header class="container header-content">
@@ -27,32 +47,26 @@
         </div>
         <section class="cart_buy container">
             <div class="items_in_card">
-                <div class="item_in_cart">
-                    <img class="cart-img" src="img/itemincart1.png" alt="item1">
-                    <div class="item_in_cart_dicription">
-                        <h4 class="cart_ite_name">MANGO PEOPLE <br> T-SHIRT</h4>
-                        <div class="disc_details">
-                            <p>Price: <span class="disc_details_span">$300</span></p>
-                            <p>Color: Red</p>
-                            <p>Size: Xl</p>
-                            <p>Quantity: 2</p>
+                <?php foreach ($items as $key => $item): ?>
+                    <form action="Cart.php" id="item_in_cart<?=$key?>" method='post'>
+                        <input type="hidden" name="id" value="<?=$key?>" />
+                        <div class="item_in_cart margin-item">
+                            <img class="cart-img" src="clothes_images/<?=$item[7]?>" alt="item2" style="object-fit: cover;">
+                            <div class="item_in_cart_dicription">
+                                <h4 class="cart_ite_name"><?=$item[1]?></h4>
+                                <div class="disc_details">
+                                    <p>Price: <span class="disc_details_span"><?=$item[3]?></span></p>
+                                    <!-- <p>Color: Red</p>
+                                    <p>Size: Xl</p>
+                                    <p>Quantity: 2</p> -->
+                                </div>
+                            </div>
+                            <a class="close_item_in_cart" onclick="document.getElementById('item_in_cart<?=$key?>').submit()">
+                                <img src="img/close-menu.svg" alt="close">
+                            </a>
                         </div>
-                    </div>
-                    <a href="#" class="close_item_in_cart"><img src="img/close-menu.svg" alt="close"></a>
-                </div>
-                <div class="item_in_cart margin-item">
-                    <img class="cart-img" src="img/itemincart2.png" alt="item2">
-                    <div class="item_in_cart_dicription">
-                        <h4 class="cart_ite_name">MANGO PEOPLE <br> T-SHIRT</h4>
-                        <div class="disc_details">
-                            <p>Price: <span class="disc_details_span">$300</span></p>
-                            <p>Color: Red</p>
-                            <p>Size: Xl</p>
-                            <p>Quantity: 2</p>
-                        </div>
-                    </div>
-                    <a href="#" class="close_item_in_cart"><img src="img/close-menu.svg" alt="close"></a>
-                </div>
+                    </form>
+                <?php endforeach;?>
                 <div class="clear_or_continue">
                     <a href="#" class="button_clear button_clear-left">CLEAR SHOPPING CART</a>
                     <a href="catalog.php" class="button_clear">CONTINUE SHOPPING</a>

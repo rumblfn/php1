@@ -1,8 +1,9 @@
 <?php
 
 include('db_connect.php');
-$items = mysqli_query($db, "SELECT * FROM `items`");
+include('auth.php');
 
+$items = mysqli_query($db, "SELECT * FROM `items`");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +25,7 @@ $items = mysqli_query($db, "SELECT * FROM `items`");
 <body>
 	<div class="wrapper">
 		<div class="top">
-			<?php include('components/header.html') ?>
+			<?php include('header.php') ?>
 		</div>
 		<div class="content">
 			<header class="container header-content">
@@ -155,23 +156,7 @@ $items = mysqli_query($db, "SELECT * FROM `items`");
 				</div>
 			</div>
 			<div class="products products-catalog">
-				<?php while ($item = mysqli_fetch_assoc($items)): ?>
-					<div class="prod">
-						<a href="product.php?id=<?=$item['id']?>">
-							<img class="prod-pic" src="clothes_images/<?=$item['preview_photo_name']?>" alt="prod<?=$item['id']?>">
-							<div class="prod-disc">
-								<h4 class="prod-h4"><?=$item['title']?></h4>
-								<p class="price"><?=$item['price']?></p>
-							</div>
-						</a>
-						<div class="add-box">
-							<a href="Cart.php" class="add">
-								<img src="img/add-pic.svg" alt="cart">
-								<p>Add to Cart</p>
-							</a>
-						</div>
-					</div>
-				<?php endwhile; ?>
+				<?php include('catalog_item.php'); ?>
 			</div>
 			<div class="scrolling-list">
 				<a href="#">

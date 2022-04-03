@@ -9,6 +9,20 @@ a {
   color: #6F6E6E;
 }
 
+.fa-a-ttagg {
+  color: white;
+}
+
+.fa-basket-shopping {
+  position: relative;
+}
+
+.items-in-basket {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 body {
   font-family: "Lato", sans-serif;
 }
