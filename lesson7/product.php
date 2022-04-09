@@ -1,6 +1,7 @@
 <?php
 
 include('db_connect.php');
+include('auth.php');
 
 $items = mysqli_query($db, "SELECT * FROM `items` ORDER BY views DESC LIMIT 3");
 
@@ -69,7 +70,7 @@ $reviews = mysqli_query($db, "SELECT * FROM `reviews` WHERE item_id = $product_i
 <body>
     <div class="wrapper">
         <div class="top">
-            <?php include('components/header.html') ?>
+            <?php include('header.php') ?>
         </div>
         <div class="content">
             <header class="container header-content">
@@ -210,23 +211,7 @@ $reviews = mysqli_query($db, "SELECT * FROM `reviews` WHERE item_id = $product_i
             </div>
         </div>
         <section class="products container margin-bottom" style="margin-top: 0">
-            <?php while ($item = mysqli_fetch_assoc($items)): ?>
-				<div class="prod">
-					<a href="product.php?id=<?=$item['id']?>">
-						<img class="prod-pic" src="clothes_images/<?=$item['preview_photo_name']?>" alt="prod<?=$item['id']?>">
-						<div class="prod-disc">
-							<h4 class="prod-h4"><?=$item['title']?></h4>
-							<p class="price"><?=$item['price']?></p>
-						</div>
-					</a>
-					<div class="add-box">
-						<a href="Cart.php" class="add">
-							<img src="img/add-pic.svg" alt="cart">
-							<p>Add to Cart</p>
-						</a>
-					</div>
-				</div>
-			<?php endwhile; ?>
+            <?php include('catalog_item.php'); ?>
         </section>
     </div>
     <footer>
